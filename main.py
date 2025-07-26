@@ -2,8 +2,10 @@
 Análisis de Datos de Talento - Challenge Ingelean
 ================================================
 
-Este módulo contiene funciones para el análisis de datos de un dataset de manufactura,
-incluyendo preprocesamiento, análisis de correlaciones y visualizaciones.
+Este módulo contiene funciones para el preprocesamiento y análisis de correlaciones 
+de un dataset de manufactura. Genera un dataset limpio listo para machine learning.
+
+Para modelos de árbol de decisión, ejecutar: python decision_tree.py
 
 Autores: 
 Fecha: 2025
@@ -231,7 +233,7 @@ def crear_tabla_correlaciones(df, guardar_archivo=True, mostrar_heatmap=True):
 
 def main():
     """
-    Función principal que ejecuta el análisis completo de datos.
+    Función principal que ejecuta el análisis de correlaciones y preprocesamiento de datos.
     
     Workflow:
         1. Carga de datos desde archivo CSV
@@ -239,16 +241,19 @@ def main():
         3. Creación de variables binarias para fallos
         4. Imputación de valores faltantes
         5. Análisis de correlaciones de Pearson
-        6. Generación de archivos de salida
+        6. Generación de dataset procesado para modelado
         
     Environment Variables:
         rute (str): Ruta al archivo CSV con los datos (definida en .env)
         
     Files Generated:
-        - matriz_correlaciones.csv
-        - top_correlaciones.csv  
-        - heatmap_correlaciones.png
-        - Dataset_Talento_Procesado.csv
+        - matriz_correlaciones.csv: Matriz completa de correlaciones
+        - top_correlaciones.csv: Correlaciones ordenadas por valor absoluto
+        - heatmap_correlaciones.png: Visualización de correlaciones
+        - Dataset_Talento_Procesado.csv: Dataset listo para machine learning
+        
+    Note:
+        Para ejecutar modelos de árbol de decisión, usar: python decision_tree.py
         
     Raises:
         FileNotFoundError: Si no se encuentra el archivo de datos
@@ -300,29 +305,58 @@ def main():
                                                   guardar_archivo=True,
                                                   mostrar_heatmap=True)
 
-    # 4. EXPORTACIÓN DEL DATASET PROCESADO
+    # 4. EXPORTACIÓN DEL DATASET PROCESADO (SOLO VARIABLES NUMÉRICAS)
     print(f"\n💾 EXPORTACIÓN DE DATOS PROCESADOS")
     print("-" * 40)
     
-    # Exportar el dataset con todos los cambios aplicados
+    # Identificar variables categóricas a eliminar
+    variables_categoricas = [
+        'timestamp', 'turno', 'operador_id', 'maquina_id', 'producto_id',
+        'fallo_detectado', 'tipo_fallo', 'observaciones'
+    ]
+    
+    # Identificar variables numéricas a mantener
+    variables_numericas = [
+        'temperatura', 'vibracion', 'humedad', 'tiempo_ciclo',
+        'cantidad_producida', 'unidades_defectuosas', 'eficiencia_porcentual',
+        'consumo_energia', 'paradas_programadas', 'paradas_imprevistas',
+        'fallos_binarios'
+    ]
+    
+    # Filtrar solo las columnas que existen en el dataset
+    variables_numericas_existentes = [col for col in variables_numericas if col in df_imputado.columns]
+    variables_categoricas_existentes = [col for col in variables_categoricas if col in df_imputado.columns]
+    
+    print(f"🗂️  Filtrado de variables:")
+    print(f"   • Variables categóricas eliminadas ({len(variables_categoricas_existentes)}): {variables_categoricas_existentes}")
+    print(f"   • Variables numéricas mantenidas ({len(variables_numericas_existentes)}): {variables_numericas_existentes}")
+    
+    # Crear dataset solo con variables numéricas
+    df_solo_numericas = df_imputado[variables_numericas_existentes].copy()
+    
+    # Exportar el dataset procesado (solo numéricas)
     archivo_procesado = "Dataset_Talento_Procesado.csv"
-    df_imputado.to_csv(archivo_procesado, index=False)
-    print(f"✅ Dataset procesado exportado: {archivo_procesado}")
-    print(f"📊 Cambios incluidos:")
+    df_solo_numericas.to_csv(archivo_procesado, index=False)
+    
+    print(f"\n✅ Dataset procesado exportado: {archivo_procesado}")
+    print(f"📊 Cambios aplicados:")
+    print(f"   • Variables categóricas eliminadas")
     print(f"   • Columna 'fallos_binarios' agregada")
     print(f"   • Valores faltantes imputados (estrategia: media)")
-    print(f"   • {df_imputado.shape[0]} registros × {df_imputado.shape[1]} columnas")
-    print(f"🎯 Listo para usar en decision_tree.py")
+    print(f"   • {df_solo_numericas.shape[0]} registros × {df_solo_numericas.shape[1]} columnas")
+    print(f"🎯 Dataset optimizado para machine learning (solo variables numéricas)")
 
     # 5. FINALIZACIÓN
-    print(f"\n✅ ANÁLISIS COMPLETADO")
+    print(f"\n✅ ANÁLISIS DE CORRELACIONES COMPLETADO")
     print("=" * 60)
     print("📁 Archivos generados:")
     print("   • matriz_correlaciones.csv")
     print("   • top_correlaciones.csv") 
     print("   • heatmap_correlaciones.png")
     print("   • Dataset_Talento_Procesado.csv")
-    print(f"\n🎯 Análisis listo para revisión!")
+    print(f"\n🎯 Dataset procesado listo para modelado!")
+    print(f"\n💡 Para ejecutar modelos de árbol de decisión:")
+    print(f"   python decision_tree.py")
 
     # Opcional: Generar reporte de perfilado
     # print("\n📊 Generando reporte de perfilado...")
