@@ -5,8 +5,6 @@ Modelo de Árbol de Decisión para Análisis de Eficiencia - Challenge Ingelean
 Este módulo implementa un modelo de árbol de decisión para predecir la eficiencia
 porcentual usando el dataset procesado de manufactura.
 
-Autor: Fabián Rodriguez
-Fecha: 2024
 """
 
 import os
