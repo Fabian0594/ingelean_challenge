@@ -5,8 +5,8 @@ Análisis de Datos de Talento - Challenge Ingelean
 Este módulo contiene funciones para el análisis de datos de un dataset de manufactura,
 incluyendo preprocesamiento, análisis de correlaciones y visualizaciones.
 
-Autor: Fabián Rodriguez
-Fecha: 2024
+Autores: 
+Fecha: 2025
 """
 
 import os
