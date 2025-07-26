@@ -248,6 +248,7 @@ def main():
         - matriz_correlaciones.csv
         - top_correlaciones.csv  
         - heatmap_correlaciones.png
+        - Dataset_Talento_Procesado.csv
         
     Raises:
         FileNotFoundError: Si no se encuentra el archivo de datos
@@ -299,13 +300,28 @@ def main():
                                                   guardar_archivo=True,
                                                   mostrar_heatmap=True)
 
-    # 4. FINALIZACIÓN
+    # 4. EXPORTACIÓN DEL DATASET PROCESADO
+    print(f"\n💾 EXPORTACIÓN DE DATOS PROCESADOS")
+    print("-" * 40)
+    
+    # Exportar el dataset con todos los cambios aplicados
+    archivo_procesado = "Dataset_Talento_Procesado.csv"
+    df_imputado.to_csv(archivo_procesado, index=False)
+    print(f"✅ Dataset procesado exportado: {archivo_procesado}")
+    print(f"📊 Cambios incluidos:")
+    print(f"   • Columna 'fallos_binarios' agregada")
+    print(f"   • Valores faltantes imputados (estrategia: media)")
+    print(f"   • {df_imputado.shape[0]} registros × {df_imputado.shape[1]} columnas")
+    print(f"🎯 Listo para usar en decision_tree.py")
+
+    # 5. FINALIZACIÓN
     print(f"\n✅ ANÁLISIS COMPLETADO")
     print("=" * 60)
     print("📁 Archivos generados:")
     print("   • matriz_correlaciones.csv")
     print("   • top_correlaciones.csv") 
     print("   • heatmap_correlaciones.png")
+    print("   • Dataset_Talento_Procesado.csv")
     print(f"\n🎯 Análisis listo para revisión!")
 
     # Opcional: Generar reporte de perfilado
