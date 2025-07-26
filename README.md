@@ -201,9 +201,9 @@ Mapa de calor visual de la matriz de correlaciones con:
 3. **Segmentación**: Análisis por turnos, operadores y máquinas
 4. **Optimización**: Identificar factores clave para mejora de eficiencia
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-**Fabián Rodriguez**
+
 - GitHub: [@Fabian0594](https://github.com/Fabian0594)
 - Proyecto: Challenge Técnico Ingelean
 
