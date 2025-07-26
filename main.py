@@ -7,8 +7,6 @@ de un dataset de manufactura. Genera un dataset limpio listo para machine learni
 
 Para modelos de árbol de decisión, ejecutar: python decision_tree.py
 
-Autores: 
-Fecha: 2025
 """
 
 import os
